@@ -92,7 +92,14 @@ app.layout = html.Div(
 
 @app.callback([Output("app-content", "children")], [Input("app-tabs", "value")])
 def render_tab_content(tab_switch):
-    return build_tab_1()
+    if tab_switch == "tab1":
+        return build_tab_1()
+    return (
+        html.Div(
+            className="main-content-container",
+            children=[],
+        ),
+    )
 
 
 # Running the server
