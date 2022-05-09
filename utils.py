@@ -96,15 +96,7 @@ def build_double_panel(left_title, left_child, right_title, right_child):
                 className="six columns",
                 children=[
                     generate_title_banner(left_title),
-                    html.Div(
-                        id="metric-div",
-                        children=[
-                            html.Div(
-                                id="metric-rows",
-                                children=[left_child],
-                            ),
-                        ],
-                    ),
+                    html.Div(className="metric-div", children=[left_child]),
                 ],
             ),
             # Right Container
@@ -113,15 +105,7 @@ def build_double_panel(left_title, left_child, right_title, right_child):
                 className="six columns",
                 children=[
                     generate_title_banner(right_title),
-                    html.Div(
-                        id="metric-div",
-                        children=[
-                            html.Div(
-                                id="metric-rows",
-                                children=[right_child],
-                            ),
-                        ],
-                    ),
+                    html.Div(className="metric-div", children=[right_child]),
                 ],
             ),
         ],

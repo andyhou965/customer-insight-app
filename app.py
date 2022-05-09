@@ -13,11 +13,7 @@ import pandas as pd
 
 from utils import *
 
-from modules.metrics import (
-    monthly_revenue_fig,
-    monthly_growth_fig,
-    monthly_active_customers_fig,
-)
+from modules.metrics import generate_metrics_fig
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
@@ -30,60 +26,52 @@ app.title = "Customer Insight APP"
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
+data_file = os.path.join(APP_PATH, os.path.join("data", "OnlineRetail.csv"))
+df = pd.read_csv(data_file, encoding='unicode_escape')
+
 
 def build_tab_1():
-    return [
-        #     # Manually select metrics
-        #     html.Div(
-        #         id="set-specs-intro-container",
-        #         # className='twelve columns',
-        #         children=html.P(
-        #             "Use historical control limits to establish a benchmark, or set new values."
-        #         ),
-        #     ),
-        #     html.Div(
-        #         id="settings-menu",
-        #         children=[
-        #             html.Div(
-        #                 id="metric-select-menu",
-        #                 # className='five columns',
-        #                 children=[
-        #                     html.Label(id="metric-select-title", children="Select Metrics"),
-        #                     html.Br(),
-        #                     dcc.Dropdown(
-        #                         id="metric-select-dropdown",
-        #                         options=list(
-        #                             {"label": param, "value": param} for param in params[1:]
-        #                         ),
-        #                         value=params[1],
-        #                     ),
-        #                 ],
-        #             ),
-        #             html.Div(
-        #                 id="value-setter-menu",
-        #                 # className='six columns',
-        #                 children=[
-        #                     html.Div(id="value-setter-panel"),
-        #                     html.Br(),
-        #                     html.Div(
-        #                         id="button-div",
-        #                         children=[
-        #                             html.Button("Update", id="value-setter-set-btn"),
-        #                             html.Button(
-        #                                 "View current setup",
-        #                                 id="value-setter-view-btn",
-        #                                 n_clicks=0,
-        #                             ),
-        #                         ],
-        #                     ),
-        #                     html.Div(
-        #                         id="value-setter-view-output", className="output-datatable"
-        #                     ),
-        #                 ],
-        #             ),
-        #         ],
-        #     ),
-    ]
+    (
+        monthly_revenue_fig,
+        monthly_growth_fig,
+        monthly_active_customers_fig,
+        monthly_order_number_fig,
+        monthly_avg_order_fig,
+    ) = generate_metrics_fig(df)
+    return (
+        html.Div(
+            className="main-content-container",
+            children=[
+                build_side_panel(),
+                html.Div(
+                    id="graphs-container",
+                    children=[
+                        build_double_panel(
+                            "Monthly Revenue",
+                            dcc.Graph(
+                                figure=monthly_revenue_fig,
+                                config={'displaylogo': False},
+                            ),
+                            'Monthly Growth Rate',
+                            dcc.Graph(
+                                figure=monthly_growth_fig,
+                                config={'displaylogo': False},
+                            ),
+                        ),
+                        html.Br(),
+                        build_double_panel(
+                            "Left Title", html.Div(), "Right Title", html.Div()
+                        ),
+                        html.Br(),
+                        build_double_panel(
+                            "Left Title", html.Div(), "Right Title", html.Div()
+                        ),
+                        build_single_panel("Title", html.Div()),
+                    ],
+                ),
+            ],
+        ),
+    )
 
 
 app.layout = html.Div(
@@ -104,29 +92,7 @@ app.layout = html.Div(
 
 @app.callback([Output("app-content", "children")], [Input("app-tabs", "value")])
 def render_tab_content(tab_switch):
-    return (
-        html.Div(
-            className="main-content-container",
-            children=[
-                build_side_panel(),
-                html.Div(
-                    id="graphs-container",
-                    children=[
-                        build_double_panel(
-                            "Left Title", html.Div(), "Right Title", html.Div()
-                        ),
-                        build_double_panel(
-                            "Left Title", html.Div(), "Right Title", html.Div()
-                        ),
-                        build_double_panel(
-                            "Left Title", html.Div(), "Right Title", html.Div()
-                        ),
-                        build_single_panel("Title", html.Div()),
-                    ],
-                ),
-            ],
-        ),
-    )
+    return build_tab_1()
 
 
 # Running the server
