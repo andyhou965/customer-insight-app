@@ -60,13 +60,37 @@ def build_tab_1():
                         ),
                         html.Br(),
                         build_double_panel(
-                            "Left Title", html.Div(), "Right Title", html.Div()
+                            "Monthly Active Customers",
+                            dcc.Graph(
+                                figure=monthly_active_customers_fig,
+                                config={'displaylogo': False},
+                            ),
+                            'Monthly Total # of Order',
+                            dcc.Graph(
+                                figure=monthly_order_number_fig,
+                                config={'displaylogo': False},
+                            ),
                         ),
                         html.Br(),
-                        build_double_panel(
-                            "Left Title", html.Div(), "Right Title", html.Div()
+                        # build_double_panel(
+                        #     "Monthly Revenue",
+                        #     dcc.Graph(
+                        #         figure=monthly_revenue_fig,
+                        #         config={'displaylogo': False},
+                        #     ),
+                        #     'Monthly Growth Rate',
+                        #     dcc.Graph(
+                        #         figure=monthly_growth_fig,
+                        #         config={'displaylogo': False},
+                        #     ),
+                        # ),
+                        build_single_panel(
+                            "Monthly Order Average",
+                            dcc.Graph(
+                                figure=monthly_avg_order_fig,
+                                config={'displaylogo': False},
+                            ),
                         ),
-                        build_single_panel("Title", html.Div()),
                     ],
                 ),
             ],

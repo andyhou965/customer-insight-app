@@ -72,7 +72,7 @@ def generate_metrics_fig(df):
         ],
         layout=plot_layout,
     )
-    monthly_active_customers_fig.update_layout(title='Monthly Active Customers')
+    # monthly_active_customers_fig.update_layout(title='Monthly Active Customers')
 
     # Monthly Total # of Order Plot
     tx_monthly_sales = tx_uk.groupby('InvoiceYearMonth')['Quantity'].sum().reset_index()
@@ -85,7 +85,7 @@ def generate_metrics_fig(df):
         ],
         layout=plot_layout,
     )
-    monthly_order_number_fig.update_layout(title='Monthly Total # of Order')
+    # monthly_order_number_fig.update_layout(title='Monthly Total # of Order')
 
     # Monthly Order Average Plot
     tx_monthly_order_avg = (
@@ -100,7 +100,7 @@ def generate_metrics_fig(df):
         ],
         layout=plot_layout,
     )
-    monthly_avg_order_fig.update_layout(title='Monthly Order Average')
+    # monthly_avg_order_fig.update_layout(title='Monthly Order Average')
 
     return (
         monthly_revenue_fig,
