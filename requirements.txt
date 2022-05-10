@@ -5,3 +5,5 @@ numpy>=1.16.2
 pandas>=0.24.2
 seaborn==0.11.2
 nbformat==5.4.0
+scikit-learn==1.0.2
+xgboost==1.6.1

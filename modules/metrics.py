@@ -1,24 +1,14 @@
-#%%
 import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 
 
-def generate_metrics_fig(df):
+def generate_metrics_fig(df, fig_layout):
     tx_data = df.copy()
-    plot_layout = {
-        "paper_bgcolor": "rgba(0,0,0,0)",
-        "plot_bgcolor": "rgba(0,0,0,0)",
-        "xaxis": dict(showline=False, showgrid=False, zeroline=True, type="category"),
-        "yaxis": dict(showgrid=True, showline=False, zeroline=True),
-        "autosize": True,
-        "height": 400,
-        "margin": dict(l=20, r=20, t=20),
-        # "title_font_color": "yellow",
-        # "font_color": "yellow",
-        "template": "plotly_dark",
-    }
-
+    plot_layout = fig_layout
+    plot_layout["xaxis"] = dict(
+        showline=False, showgrid=False, zeroline=True, type="category"
+    )
     # converting the type of Invoice Date Field from string to datetime.
     tx_data['InvoiceDate'] = pd.to_datetime(tx_data['InvoiceDate'])
     # creating YearMonth field for the ease of reporting and visualization
@@ -102,12 +92,56 @@ def generate_metrics_fig(df):
     )
     # monthly_avg_order_fig.update_layout(title='Monthly Order Average')
 
+    # create a dataframe contaning CustomerID and first purchase date
+    tx_min_purchase = tx_uk.groupby('CustomerID').InvoiceDate.min().reset_index()
+    tx_min_purchase.columns = ['CustomerID', 'MinPurchaseDate']
+    tx_min_purchase['MinPurchaseYearMonth'] = tx_min_purchase['MinPurchaseDate'].map(
+        lambda date: 100 * date.year + date.month
+    )
+
+    # merge first purchase date column to our main dataframe (tx_uk)
+    tx_uk = pd.merge(tx_uk, tx_min_purchase, on='CustomerID')
+    # create a column called User Type and assign Existing
+    # if User's First Purchase Year Month before the selected Invoice Year Month
+    tx_uk['UserType'] = 'New'
+    tx_uk.loc[
+        tx_uk['InvoiceYearMonth'] > tx_uk['MinPurchaseYearMonth'], 'UserType'
+    ] = 'Existing'
+
+    # calculate the Revenue per month for each user type
+    tx_user_type_revenue = (
+        tx_uk.groupby(['InvoiceYearMonth', 'UserType'])['Revenue'].sum().reset_index()
+    )
+
+    # filtering the dates and plot the result
+    tx_user_type_revenue = tx_user_type_revenue.query(
+        "InvoiceYearMonth != 201012 and InvoiceYearMonth != 201112"
+    )
+
+    new_existing_fig = go.Figure(
+        data=[
+            go.Scatter(
+                x=tx_user_type_revenue.query("UserType == 'Existing'")[
+                    'InvoiceYearMonth'
+                ],
+                y=tx_user_type_revenue.query("UserType == 'Existing'")['Revenue'],
+                name='Existing',
+            ),
+            go.Scatter(
+                x=tx_user_type_revenue.query("UserType == 'New'")['InvoiceYearMonth'],
+                y=tx_user_type_revenue.query("UserType == 'New'")['Revenue'],
+                name='New',
+            ),
+        ],
+        layout=plot_layout,
+    )
+
     return (
         monthly_revenue_fig,
         monthly_growth_fig,
         monthly_active_customers_fig,
         monthly_order_number_fig,
-        monthly_avg_order_fig,
+        new_existing_fig,
     )
     # # %%
     # # create a dataframe contaning CustomerID and first purchase date
