@@ -37,12 +37,12 @@ def build_menu_tabs():
         ("metrics-tab", "tab1", "The Metrics"),
         ("segmentation-tab", "tab2", "Customer Segmentation"),
         ("clv-tab", "tab3", "Customer Lifetime Value"),
-        ("churn-tab", "tab4", "Churn Prediction"),
-        ("npd-tab", "tab5", "Next Purchase Day"),
-        ("sales-tab", "tab6", "Predicting Sales"),
-        ("market-tab", "tab7", "Market Response Models"),
-        ("uplift-tab", "tab8", "Uplift Modeling"),
-        ("ab-tab", "tab9", "A/B Testing"),
+        # ("churn-tab", "tab4", "Churn Prediction"),
+        # ("npd-tab", "tab5", "Next Purchase Day"),
+        # ("sales-tab", "tab6", "Predicting Sales"),
+        # ("market-tab", "tab7", "Market Response Models"),
+        # ("uplift-tab", "tab8", "Uplift Modeling"),
+        # ("ab-tab", "tab9", "A/B Testing"),
     ]
     tabs = [
         dcc.Tab(
