@@ -16,6 +16,7 @@ from utils import *
 from modules.metrics import generate_metrics_fig
 from modules.customer_segmentation import generate_segmentation_fig
 from modules.clv_prediction import generate_clv_fig
+from modules.churn_prediction import generate_churn_fig
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
@@ -209,6 +210,67 @@ def build_tab_3():
     )
 
 
+churn_df = pd.read_csv("churn_data.csv")
+
+
+def build_tab_4(churn_df, fig_layout):
+    (
+        gender_fig,
+        partner_fig,
+        phone_fig,
+        multiplelines_fig,
+        internet_fig,
+        security_fig,
+        backup_fig,
+        protection_fig,
+        support_fig,
+        streamingTV_fig,
+        streamingMovies_fig,
+        contract_fig,
+        billing_fig,
+        payment_fig,
+        tenure_fig,
+        tenurecluster_fig,
+        monthlyCharges_fig,
+        monthlyChargesCluster_fig,
+        totalCharges_fig,
+        totalChargeCluster_fig,
+        df_data,
+    ) = generate_churn_fig(churn_df, fig_layout)
+
+    return (
+        html.Div(
+            className="main-content-container",
+            children=[
+                build_side_panel(),
+                html.Div(
+                    id="graphs-container",
+                    children=[
+                        build_triple_panel(
+                            "Recency",
+                            dcc.Graph(
+                                figure=gender_fig,
+                                config={'displaylogo': False},
+                            ),
+                            "Frequency",
+                            dcc.Graph(
+                                figure=partner_fig,
+                                config={'displaylogo': False},
+                            ),
+                            "Monetary Value",
+                            dcc.Graph(
+                                figure=phone_fig,
+                                config={'displaylogo': False},
+                            ),
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    )
+    pass
+
+
 app.layout = html.Div(
     id="big-app-container",
     children=[
@@ -227,12 +289,18 @@ app.layout = html.Div(
 
 @app.callback([Output("app-content", "children")], [Input("app-tabs", "value")])
 def render_tab_content(tab_switch):
+    # The Metrics
     if tab_switch == "tab1":
         return build_tab_1()
+    # Customer Segmentation
     elif tab_switch == "tab2":
         return build_tab_2()
+    # CLV - Customer Lifetime Value
     elif tab_switch == "tab3":
         return build_tab_3()
+    # Churn Prediction
+    elif tab_switch == "tab4":
+        return build_tab_4()
     return (
         html.Div(
             className="main-content-container",
