@@ -58,7 +58,7 @@ def build_tab_1():
             children=[
                 # build_side_panel(),
                 html.Div(
-                    id="graphs-container",
+                    className="graphs-container",
                     children=[
                         build_double_panel(
                             "Monthly Revenue",
@@ -127,7 +127,7 @@ def build_tab_2():
             children=[
                 build_side_panel(),
                 html.Div(
-                    id="graphs-container",
+                    className="graphs-container",
                     children=[
                         build_triple_panel(
                             "Recency",
@@ -185,7 +185,7 @@ def build_tab_3():
             children=[
                 build_side_panel(),
                 html.Div(
-                    id="graphs-container",
+                    className="graphs-container",
                     children=[
                         build_single_panel(
                             "6m Revenue",
@@ -216,33 +216,69 @@ app.layout = html.Div(
         html.Div(
             id="app-container",
             children=[
-                build_menu_tabs(),
+                # build_menu_tabs(),
                 # Main app
-                html.Div(id="app-content"),
+                html.Div(
+                    id="app-content",
+                    className="tabs",
+                    children=[
+                        dcc.Tabs(
+                            id="app-tabs",
+                            value="tab1",
+                            className="custom-tabs",
+                            children=[
+                                dcc.Tab(
+                                    id="metrics-tab",
+                                    className="custom-tab",
+                                    selected_className="custom-tab--selected",
+                                    value="tab1",
+                                    label="The Metrics",
+                                    children=build_tab_1(),
+                                ),
+                                dcc.Tab(
+                                    id="segmentation-tab",
+                                    className="custom-tab",
+                                    selected_className="custom-tab--selected",
+                                    value="tab2",
+                                    label="Customer Segmentation",
+                                    children=build_tab_2(),
+                                ),
+                                dcc.Tab(
+                                    id="clv-tab",
+                                    className="custom-tab",
+                                    selected_className="custom-tab--selected",
+                                    value="tab3",
+                                    label="Customer Lifetime Value",
+                                    children=build_tab_3(),
+                                ),
+                            ],
+                        )
+                    ],
+                ),
             ],
         ),
     ],
 )
 
 
-@app.callback([Output("app-content", "children")], [Input("app-tabs", "value")])
-def render_tab_content(tab_switch):
-    # The Metrics
-    if tab_switch == "tab1":
-        return build_tab_1()
-    # Customer Segmentation
-    elif tab_switch == "tab2":
-        return build_tab_2()
-    # CLV - Customer Lifetime Value
-    elif tab_switch == "tab3":
-        return build_tab_3()
+# @app.callback([Output("app-content", "children")], [Input("app-tabs", "value")])
+# def render_tab_content(tab_switch):
+#     # The Metrics
+#     if tab_switch == "tab1":
+#         return build_tab_1()
+#     # Customer Segmentation
+#     elif tab_switch == "tab2":
+#         return build_tab_2()
+#     # CLV - Customer Lifetime Value
+#     elif tab_switch == "tab3":
+#         return build_tab_3()
 
-    return (
-        html.Div(
-            className="main-content-container",
-            children=[],
-        ),
-    )
+#     return (
+#         html.Div(
+#             className="main-content-container",
+#             children=[],
+#         ),
+#     )
 
 
 # Running the server

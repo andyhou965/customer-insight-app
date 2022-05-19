@@ -71,29 +71,28 @@ def generate_title_banner(title):
 
 def build_side_panel(children=[]):
     return html.Div(
-        id="quick-stats",
-        className="row",
+        # id="quick-stats",
+        className="quick-stats row",
         children=children,
     )
 
 
 def build_single_panel(title, child):
     return html.Div(
-        id="control-chart-container",
-        className="twelve columns",
+        # id="control-chart-container",
+        className="control-chart-container twelve columns",
         children=[generate_title_banner(title), child],
     )
 
 
 def build_double_panel(left_title, left_child, right_title, right_child):
     return html.Div(
-        id="top-section-container",
-        className="row",
+        # id="top-section-container",
+        className="top-section-container row",
         children=[
             # Left Container
             html.Div(
-                id="metric-summary-session",
-                className="six columns",
+                className="metric-summary-session six columns",
                 children=[
                     generate_title_banner(left_title),
                     html.Div(className="metric-div", children=[left_child]),
@@ -101,8 +100,7 @@ def build_double_panel(left_title, left_child, right_title, right_child):
             ),
             # Right Container
             html.Div(
-                id="metric-summary-session",
-                className="six columns",
+                className="metric-summary-session six columns",
                 children=[
                     generate_title_banner(right_title),
                     html.Div(className="metric-div", children=[right_child]),
@@ -116,13 +114,12 @@ def build_triple_panel(
     left_title, left_child, mid_title, mid_child, right_title, right_child
 ):
     return html.Div(
-        id="top-section-container",
-        className="row",
+        # id="top-section-container",
+        className="top-section-container row",
         children=[
             # Left Container
             html.Div(
-                id="metric-summary-session",
-                className="four columns",
+                className="metric-summary-session four columns",
                 children=[
                     generate_title_banner(left_title),
                     html.Div(className="metric-div", children=[left_child]),
@@ -130,8 +127,7 @@ def build_triple_panel(
             ),
             # Mid Container
             html.Div(
-                id="metric-summary-session",
-                className="four columns",
+                className="metric-summary-session four columns",
                 children=[
                     generate_title_banner(mid_title),
                     html.Div(className="metric-div", children=[mid_child]),
@@ -139,8 +135,7 @@ def build_triple_panel(
             ),
             # Right Container
             html.Div(
-                id="metric-summary-session",
-                className="four columns",
+                className="metric-summary-session four columns",
                 children=[
                     generate_title_banner(right_title),
                     html.Div(className="metric-div", children=[right_child]),
