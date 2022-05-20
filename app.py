@@ -52,11 +52,20 @@ def build_tab_1():
         monthly_order_number_fig,
         new_existing_fig,
     ) = generate_metrics_fig(df, fig_layout)
+    comment = """
+    - Revenue is growing, especially **36.5%** growth on November(The data in December is incomplete).
+    - However, there is a big decrease on April. Was it due to less active customers or our customers did less orders? Maybe they just started to buy cheaper products? We need to do a deep-dive analysis.
+    - In April, Monthly Active Customer number dropped to 817 from 923 (-11.5%), Order Count is also declined in April (279k to 257k, -8%), Monthly Order Average dropped for April (16.7 to 15.8).
+    - Existing customers are showing a positive trend and tell us that our customer base is growing but new customers have a slight negative trend.
+    """
+
     return (
         html.Div(
             className="main-content-container",
             children=[
-                # build_side_panel(),
+                build_side_panel(
+                    [dcc.Markdown(className="comment-markdown", children=[comment])]
+                ),
                 html.Div(
                     className="graphs-container",
                     children=[
@@ -121,11 +130,29 @@ def build_tab_2():
         recency_revenue_fig,
         recency_freq_fig,
     ) = generate_segmentation_fig(df, fig_layout)
+    comment = """
+    ## Why 
+    Because you can't treat every customer the same way with the same content, same channel, same importance. They will find another option which understands them better. Customers who use your platform have different needs and they have their own different profile. Your should adapt your actions depending on that.
+    
+    ## How
+    We will use RFM to implement customer segmentation. **RFM** stands for Recency - Frequency - Monetary Value. Theoretically we will have segments like below:
+    - **Low Value**: Customers who are less active than others, not very frequent buyer/visitor and generates very low - zero - maybe negative revenue.
+    - **Mid Value**: In the middle of everything. Often using our platform (but not as much as our High Values), fairly frequent and generates moderate revenue.
+    - **High Value**: The group we don't want to lose. High Revenue, Frequency and low Inactivity.
+
+    ## Action
+    - **High Value**: Improve Retention
+    - **Mid Value**: Improve Retention + Increase Frequency
+    - **Low Value**: Increase Frequency
+    """
+
     return (
         html.Div(
             className="main-content-container",
             children=[
-                build_side_panel(),
+                build_side_panel(
+                    [dcc.Markdown(className="comment-markdown", children=[comment])]
+                ),
                 html.Div(
                     className="graphs-container",
                     children=[
@@ -179,11 +206,25 @@ def build_tab_2():
 
 def build_tab_3():
     (hist_fig, clv_fig) = generate_clv_fig(df, fig_layout)
+    comment = """
+    ## Why
+    We invest in customers (acquisition costs, offline ads, promotions, discounts & etc.) to generate revenue and be profitable. Naturally, these actions make some customers super valuable in terms of lifetime value but there are always some customers who pull down the profitability. We need to identify these behavior patterns, segment customers and act accordingly.
+
+    ## How
+    We can have Lifetime Value for each customer in a specific time window using the equation below:
+    ***Lifetime Value**: Total Gross Revenue - Total Cost*
+    This equation now gives us the historical lifetime value. If we see some customers having very high negative lifetime value historically, it could be too late to take an action. At this point, we need to predict the future with machine learning.
+
+    ## Action
+    Considering business part of this analysis, we need to treat customers differently based on their predicted LTV.
+    """
     return (
         html.Div(
             className="main-content-container",
             children=[
-                build_side_panel(),
+                build_side_panel(
+                    [dcc.Markdown(className="comment-markdown", children=[comment])]
+                ),
                 html.Div(
                     className="graphs-container",
                     children=[

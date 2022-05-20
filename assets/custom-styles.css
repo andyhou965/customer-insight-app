@@ -85,6 +85,26 @@ body {
   margin: 0px 10px;
 }
 
+.comment-markdown {
+    font-size: 1.5rem;
+    padding: 1.5rem;
+    color: #8880f9;
+    flex: auto;
+    line-height: 30px;
+}
+
+.comment-markdown > h2 {
+    padding-top: 2rem;
+}
+
+ul {
+    list-style-type: disc;
+}
+
+li {
+    margin-bottom: 1.5rem;
+}
+
 /* Tabs
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #tabs {
