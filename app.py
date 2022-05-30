@@ -4,10 +4,6 @@ import pathlib
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
-import dash_table
-import plotly.graph_objs as go
-import dash_daq as daq
 
 import pandas as pd
 
@@ -324,4 +320,4 @@ app.layout = html.Div(
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8003, dev_tools_ui=False)
+    app.run_server(host="0.0.0.0", port=8003, dev_tools_ui=False)
